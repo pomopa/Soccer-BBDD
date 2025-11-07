@@ -1,11 +1,11 @@
---------- Country --------- (David)
+--------- Country ---------
 INSERT INTO Country (CountryName)
 SELECT DISTINCT SUBSTR(City, INSTR(City, ',') + 2) AS CountryName
 FROM ds1_players
-WHERE INSTR(City, ',') > 0     --Verifiquem que té coma el camp
+WHERE INSTR(City, ',') > 0 
 AND SUBSTR(City, INSTR(City, ',') + 2) NOT IN (SELECT CountryName FROM Country);
 
--- Inserim totes els països de la taula ds1_match en el cas que no estigui
+-- Insertion of all the countries in the table ds1_match if missing
 INSERT INTO Country (CountryName)
 SELECT DISTINCT SUBSTR(city, INSTR(city, ',') + 2) AS CountryName
 FROM ds1_match
@@ -37,7 +37,7 @@ WHERE INSTR(away_city, ',') > 0
 AND SUBSTR(away_city, INSTR(away_city, ',') + 2) NOT IN (SELECT CountryName FROM Country);
 
 
---------- Country (user_db) --------- (Marina)
+--------- Country (user_db) ---------
 
 INSERT INTO Country (CountryName)
 SELECT DISTINCT SUBSTR(localization, INSTR(localization, ',') + 2) AS CountryName
@@ -46,11 +46,11 @@ WHERE INSTR(localization, ',') > 0
 AND SUBSTR(localization, INSTR(localization, ',') + 2) NOT IN (SELECT CountryName FROM Country);
 
 
---------- Country (product_sales) --------- (Pol)
-INSERT INTO Country (CountryName)   --> Inserim tots els països que poden faltar de scripts anteriors
+--------- Country (product_sales) ---------
+INSERT INTO Country (CountryName)
 SELECT DISTINCT SUBSTR(City, INSTR(City, ',') + 2) AS CountryName
 FROM ds2_product_sales p
-WHERE INSTR(City, ',') > 0          --> Verifiquem que té coma el camp
+WHERE INSTR(City, ',') > 0
   AND NOT EXISTS (
     SELECT 1
     FROM Country c
@@ -58,7 +58,7 @@ WHERE INSTR(City, ',') > 0          --> Verifiquem que té coma el camp
 );
 
 
---------- City --------- (David)
+--------- City ---------
 
 INSERT INTO City (CityName, CountryName)
 SELECT DISTINCT SUBSTR(City, 1, INSTR(City, ',') - 1) AS CityName, SUBSTR(City, INSTR(City, ',') + 2) AS CountryName
@@ -66,7 +66,6 @@ FROM ds1_players
 WHERE INSTR(City, ',') > 0
 AND (SUBSTR(City, 1, INSTR(City, ',') - 1), SUBSTR(City, INSTR(City, ',') + 2)) NOT IN (SELECT CityName, CountryName FROM City);
 
--- Inserim totes els països de la taula ds1_match en el cas que no estigui
 INSERT INTO City (CityName, CountryName)
 SELECT DISTINCT SUBSTR(city, 1, INSTR(city, ',') - 1) AS CityName, SUBSTR(city, INSTR(city, ',') + 2) AS CountryName
 FROM ds1_match
@@ -98,7 +97,7 @@ WHERE INSTR(away_city, ',') > 0
 AND (SUBSTR(away_city, 1, INSTR(away_city, ',') - 1), SUBSTR(away_city, INSTR(away_city, ',') + 2)) NOT IN (SELECT CityName, CountryName FROM City);
 
 
-----------City (user_db) ------ (Marina)
+----------City (user_db) ------
 
 INSERT INTO City (CityName, CountryName)
 SELECT DISTINCT SUBSTR(localization, 1, INSTR(localization, ',') - 1) AS CityName, SUBSTR(localization, INSTR(localization, ',') + 2) AS CountryName
@@ -107,13 +106,13 @@ WHERE INSTR(localization, ',') > 0
 AND (SUBSTR(localization, 1, INSTR(localization, ',') - 1), SUBSTR(localization, INSTR(localization, ',') + 2)) NOT IN (SELECT CityName, CountryName FROM City);
 
 
---------- City  (product_sales) --------- (Pol)
-INSERT INTO City (CityName, CountryName) --> Inserim totes les ciutats que poden faltar de scripts anteriors
+--------- City  (product_sales) --------- 
+INSERT INTO City (CityName, CountryName)
 SELECT DISTINCT
     SUBSTR(City, 1, INSTR(City, ',') - 1) AS CityName,
     SUBSTR(City, INSTR(City, ',') + 2) AS CountryName
 FROM ds2_product_sales p
-WHERE INSTR(City, ',') > 0          --> Verifiquem que té coma el camp
+WHERE INSTR(City, ',') > 0
   AND NOT EXISTS (
     SELECT 1
     FROM City c
@@ -121,7 +120,7 @@ WHERE INSTR(City, ',') > 0          --> Verifiquem que té coma el camp
       AND c.CityName = SUBSTR(City, 1, INSTR(City, ',') - 1)
 );
 
---------- Club --------- (David)
+--------- Club ---------
 
 INSERT INTO Club (ClubName, IdCity)
 SELECT DISTINCT dsm.home,
@@ -149,7 +148,7 @@ WHERE NOT EXISTS (
 );
 
 
---------- Stadium --------- (David)
+--------- Stadium ---------
 
 INSERT INTO Stadium (StadiumName, IdCity)
 SELECT DISTINCT venue AS StadiumName, 
@@ -166,7 +165,7 @@ WHERE NOT EXISTS (
 );
 
 
----------ClubStadium---------- (David)  
+---------ClubStadium----------
 
 INSERT INTO ClubStadium (ClubName, StadiumName) 
 SELECT DISTINCT dsm.home AS ClubName, dsm.venue AS StadiumName
@@ -177,7 +176,7 @@ WHERE NOT EXISTS
     AND cs.StadiumName = dsm.venue);
 
 
---------- Competition --------- (David)
+--------- Competition ---------
 
 INSERT INTO Competition (League, Season)
 SELECT DISTINCT dsm.league, dsm.season
@@ -187,7 +186,7 @@ WHERE NOT EXISTS (
     WHERE c.League = dsm.league AND c.Season = dsm.season);
 
  
---------- Match --------- (Mada) 
+--------- Match --------- 
 
 INSERT INTO Match (
     MatchId, MatchDate, MatchHour, Attendance, StadiumName, IdCompetition, HomeClubName, AwayClubName, 
@@ -238,7 +237,7 @@ WHERE NOT EXISTS (
 
 
 
--------- Person --------- (David)
+-------- Person ---------
 
 INSERT INTO Person (Name, Surname, BirthDate, Gender, IdCity)
 SELECT DISTINCT
@@ -346,7 +345,7 @@ WHERE NOT EXISTS (
 );
 
 
----------- Person (Communicator)--------- (Marina)
+---------- Person (Communicator)---------
 
 INSERT INTO Person (Name, Surname, BirthDate, Gender)
 SELECT DISTINCT FirstName, LastName, BirthDate, Gender
@@ -374,7 +373,7 @@ WHERE NOT EXISTS (
 );
 
 
---------- Referee --------- (David)
+--------- Referee ---------
 
 INSERT INTO Referee (IdReferee)
 SELECT p.IdPerson AS IdReferee
@@ -409,7 +408,7 @@ WHERE NOT EXISTS (
     SELECT 1 FROM Referee r WHERE r.IdReferee = p.IdPerson);
 
 
---------- Manager --------- (David)
+--------- Manager ---------
 
 INSERT INTO Manager (IdManager, Tactics, Style)
 SELECT DISTINCT 
@@ -461,7 +460,7 @@ WHERE NOT EXISTS (
 );
 
 
---------- Player --------- (Mada)  Agafem la primera posició com a la preferida
+--------- Player ---------
 
 INSERT INTO Player (IdPlayer, Height, Weight, Footed, PreferredPosition)
 SELECT DISTINCT p.IdPerson AS IdPlayer, dsp.Height, dsp.Weight, dsp.Footed, 
@@ -478,7 +477,7 @@ WHERE NOT EXISTS (
 );
 
 
---------- ManagerClub --------- (Mada)
+--------- ManagerClub ---------
 
 INSERT INTO ManagerClub (ClubName, IdManager, StartDate, EndDate)
 SELECT DISTINCT ds1.home AS ClubName, p.IdPerson AS IdManager,
@@ -524,7 +523,7 @@ WHERE NOT EXISTS (
 );
 
 
---------- RefereeMatch --------- (David) 
+--------- RefereeMatch ---------
 
 INSERT INTO RefereeMatch (MatchId, IdReferee, Role, CertRefereeCertification)
 SELECT DISTINCT
@@ -610,7 +609,7 @@ WHERE NOT EXISTS
     AND rm.IdReferee = p.IdPerson);    
 
 
---------- PlayerClub  --------- (Mada)
+--------- PlayerClub  ---------
 
 INSERT INTO PlayerClub(ClubName, IdPlayer, StartDate, EndDate)
 SELECT DISTINCT
@@ -639,7 +638,7 @@ WHERE NOT EXISTS (
 );
 
 
---------- Affiliates --------- (Marina)
+--------- Affiliates ---------
 
 INSERT INTO Affiliates (ClubName1, ClubName2)
 SELECT DISTINCT c1.ClubName AS ClubName1, c2.ClubName AS ClubName2
@@ -653,7 +652,7 @@ AND NOT EXISTS (
 );
 
 
---------- CompetitionClub --------- (Marina) 
+--------- CompetitionClub --------
 
 INSERT INTO CompetitionClub (ClubName, IdCompetition, TotalPoints)
 SELECT DISTINCT dsm.home AS ClubName, 
@@ -702,7 +701,7 @@ WHERE NOT EXISTS (
 );
 
 
------------- PlayerMatch ----------- (Mada) glvcyficvotugkjvbvghftrxddcfvjhmnkj jvgb 
+------------ PlayerMatch ----------
 
 INSERT INTO PlayerMatch (IdMatch, IdPlayer, Goals, Shots, ShotsOnTarget, Assists, YellowCards, RedCards, Position)
 SELECT DISTINCT
@@ -732,7 +731,7 @@ AND NOT EXISTS (
 );
 
 
---------- User_db --------- (Marina)
+--------- User_db ---------
 
 INSERT INTO User_db (Nickname, CreationDate, Verified, IdCity)
 SELECT DISTINCT dsp.nickname, dsp.creation_date, dsp.verified,
@@ -769,7 +768,7 @@ FROM ds3_tvs
 WHERE programme_lssl NOT IN (SELECT Nickname FROM User_db);
 
 
---------- Post --------- (Marina)
+--------- Post --------
 
 INSERT INTO Post (PostId, PostText, PostDate, Likes, Reposts, Nickname, ReplyTo)
 SELECT DISTINCT dsp.post_id, dsp.post, dsp.post_date, dsp.likes, dsp.reposts, dsp.nickname, dsp.reply_to
@@ -785,7 +784,7 @@ WHERE dsp.post IS NOT NULL AND NOT EXISTS (
     SELECT 1 FROM Post p WHERE p.PostId = dsp.post);
 
 
---------- Hashtag --------- (Marina)
+--------- Hashtag ---------
 
 INSERT INTO Hashtag (Hashtag, HashtagDesc, TrendingStatus)
 SELECT DISTINCT dsp.hashtag, dsp.hashtag_desc, dsp.trending_status
@@ -795,7 +794,7 @@ WHERE NOT EXISTS (
     AND h.HashtagDesc = dsp.hashtag_desc AND h.TrendingStatus = dsp.trending_status);
 
 
---------- PostHashtag --------- (Marina)
+--------- PostHashtag ---------
 
 INSERT INTO PostHashtag (Hashtag, PostId)
 SELECT DISTINCT dsp.hashtag, dsp.post_id
@@ -805,7 +804,7 @@ WHERE NOT EXISTS (
     WHERE ph.Hashtag = dsp.hashtag AND ph.PostId = dsp.post_id);
 
 
---------- Image --------- (Marina)
+--------- Image ---------
 
 INSERT INTO Image (ImageTitle, Path, Mime) 
 SELECT DISTINCT dsp.image, dsp.path, dsp.mime
@@ -815,7 +814,7 @@ WHERE NOT EXISTS (
     AND i.Path = dsp.path AND i.Mime = dsp.mime);
 
 
----------- PostImage -------- (Marina)
+---------- PostImage -------
 
 INSERT INTO PostImage (PostId, ImageTitle)
 SELECT DISTINCT dsp.post_id, dsp.image
@@ -825,7 +824,7 @@ WHERE NOT EXISTS (
     WHERE pi.PostId = dsp.post_id AND pi.ImageTitle = dsp.image); 
 
 
---------- Communicator --------- (Marina)
+--------- Communicator ---------
 
 INSERT INTO Communicator (IdCommunicator, Specialisation, Nickname)
 SELECT DISTINCT 
@@ -857,7 +856,7 @@ WHERE NOT EXISTS (
     AND com.Specialisation = dst.Specialization AND com.Nickname = dst.Username_lssl);
 
 
---------- MediaGroup --------- (Marina)
+--------- MediaGroup ---------
 
 INSERT INTO MediaGroup (NameOfMediaGroup, DescriptionOfMediaGroup, HeadquartersOfTheMediaGroup) 
 SELECT DISTINCT dsr.name_of_media_group, dsr.description_of_media_group, dsr.headquarters_of_the_media_group
@@ -877,7 +876,7 @@ WHERE NOT EXISTS (
     AND mg.HeadquartersOfTheMediaGroup = dst.headquarters_of_the_media_group);
 
 
---------- RadioStation --------- (Marina)
+--------- RadioStation ---------
 
 INSERT INTO RadioStation (NameOfTheRadioStation, DescriptionOfTheRadioStation, NameOfMediaGroup) 
 SELECT DISTINCT dsr.name_of_the_radio_station, dsr.description_of_the_radio_station, dsr.name_of_media_group
@@ -888,7 +887,7 @@ WHERE NOT EXISTS (
     AND rs.NameOfMediaGroup = dsr.name_of_media_group);
 
 
---------- TelevisionChannel -------- (Marina)
+--------- TelevisionChannel --------
 
 INSERT INTO TelevisionChannel (TitleOfTheTvChannel, VideoQualityOfTheTvChannel, NameOfMediaGroup) 
 SELECT DISTINCT dst.title_of_the_tv_channel, dst.video_quality_of_the_tv_channel, dst.name_of_media_group
@@ -899,7 +898,7 @@ WHERE NOT EXISTS (
     AND tc.NameOfMediaGroup = dst.name_of_media_group);
 
 
---------- Programme --------- (Marina)
+--------- Programme ---------
 
 INSERT INTO Programme (ProgrammeName, Description, Schedule) 
 SELECT DISTINCT dsr.programme, dsr.description, dsr.schedule
@@ -916,7 +915,7 @@ WHERE NOT EXISTS (
     AND prog.Description = dst.description AND prog.Schedule = dst.schedule);
 
 
---------- TelevisionProgramme --------- (Marina)
+--------- TelevisionProgramme ---------
 
 INSERT INTO TelevisionProgramme (TelevisionProgrammeName, ProductionCompany, TitleOfTheTvChannel, Nickname)
 SELECT DISTINCT dst.programme, dst.production_company, dst.title_of_the_tv_channel, dst.programme_lssl
@@ -927,7 +926,7 @@ WHERE NOT EXISTS (
     AND tp.Nickname = dst.programme_lssl);
 
 
---------- RadioProgramme ----------- (Marina)
+--------- RadioProgramme -----------
 
 INSERT INTO RadioProgramme (RadioProgrammeName, Podcast, NameOfTheRadioStation, Nickname)
 SELECT DISTINCT dsr.programme, dsr.podcast, dsr.name_of_the_radio_station, dsr.programme_lssl
@@ -937,7 +936,7 @@ WHERE NOT EXISTS (
     AND rp.NameOfTheRadioStation = dsr.name_of_the_radio_station AND rp.Nickname = dsr.programme_lssl);
 
 
----------- ProgrammeCommunicator ----------- (Marina)
+---------- ProgrammeCommunicator -----------
 
 INSERT INTO ProgrammeCommunicator (IdCommunicator, ProgrammeName, FirstRole, SecondRole)
 SELECT DISTINCT p.IdPerson AS IdCommunicator, dsr.programme AS ProgrammeName,
@@ -975,32 +974,7 @@ AND NOT EXISTS (
     AND pc.ProgrammeName = dst.programme)
 GROUP BY p.IdPerson, dst.programme;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
------------- Publicitat Merxandatge
+------------ Publicity Merchandizing
 ------------------------------------------------------------- 1 ---------------------------------------
 
 --------- TypeProduct ---------**
@@ -1109,7 +1083,7 @@ WHERE CreditCard_Num IS NOT NULL
 );
 
 
---------- Person (Shop keepers) ---------- (Pol)
+--------- Person (Shop keepers) ---------- 
 
 INSERT INTO PERSON (Name, Surname, BirthDate, Gender)
 SELECT dsp.FirstName, dsp.LastName, dsp.birthdate, dsp.Gender
@@ -1121,7 +1095,7 @@ WHERE NOT EXISTS (
 );
 
 
---------- ShopKeeper --------- (Pol)
+--------- ShopKeeper ---------
 
 INSERT INTO ShopKeeper (VacationDays, IdShopKeeper)
 SELECT DISTINCT dssk.vacation_days, p.IdPerson
@@ -1134,7 +1108,7 @@ WHERE NOT EXISTS (
 );
 
 
---------- Manages --------- (Pol)
+--------- Manages ---------
 INSERT INTO Manages (IdShop, Role, Shift, IdShopKeeper)
 SELECT DISTINCT s.IdShop, dssk.role, dssk.shift, p.IdPerson
 FROM ds2_shop_keepers dssk
@@ -1148,10 +1122,10 @@ WHERE NOT EXISTS (
 
 
 
------------- Publicitat inserts
+------------ Publicity inserts
 ------------------------------------------------------------- 1 ---------------------------------------
--- Codi Client ----
--- Per nom de la ciutat i id-- !!! este es el bueno!!!!
+-- Client Code ----
+-- By city name and id --
 
 INSERT INTO City (CityName, CountryName)
 SELECT DISTINCT 
@@ -1384,8 +1358,6 @@ AND NOT EXISTS (
     AND ap.PlacementDate = p.placementdate
 );
 
-
-
 -- CategoryAd
 INSERT INTO CategoryAd (NumAd, Category_Name)
 SELECT DISTINCT a.num, c.category_name
@@ -1409,7 +1381,3 @@ WHERE NOT EXISTS (
     WHERE ca.NumAd = a.num
     AND ca.Category_Name = c.category_name
 );
-
-
-
-
