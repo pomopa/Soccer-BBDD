@@ -67,14 +67,14 @@ DROP SEQUENCE StoresSeq;
 DROP SEQUENCE ManagesSeq;
 
 
---------- Country --------- (David)
+--------- Country ---------
 
 CREATE TABLE Country (
     --IdCountry NUMBER PRIMARY KEY,
     CountryName VARCHAR2(255) PRIMARY KEY
 );
 
---------- City --------- (David)
+--------- City ---------
 
 CREATE SEQUENCE CitySeq
   START WITH 1
@@ -97,7 +97,7 @@ END;
 /
 
 
---------- Club --------- (David)
+--------- Club ---------
 
 CREATE TABLE Club (
     ClubName VARCHAR2(26) PRIMARY KEY,
@@ -107,7 +107,7 @@ CREATE TABLE Club (
 );
 
 
---------- Stadium --------- (David)
+--------- Stadium ---------
 
 CREATE TABLE Stadium (
     StadiumName VARCHAR2(128) PRIMARY KEY,
@@ -125,7 +125,7 @@ CREATE TABLE ClubStadium (
     FOREIGN KEY (StadiumName) REFERENCES Stadium(StadiumName)
 );
 
---------- Competition --------- (David)
+--------- Competition --------- 
 
 CREATE SEQUENCE CompetitionSeq
   START WITH 1
@@ -145,7 +145,7 @@ BEGIN
 END;
 /
 
---------- Match --------- (David)
+--------- Match --------
 
 CREATE TABLE Match (
     MatchId VARCHAR2(26) PRIMARY KEY,
@@ -170,7 +170,7 @@ CREATE TABLE Match (
     FOREIGN KEY (IdCity) REFERENCES City (IdCity)
 );
 
--------- Person --------- (David)
+-------- Person ---------
 
 CREATE SEQUENCE PersonSeq
   START WITH 1
@@ -195,14 +195,14 @@ END;
 /
 
 
---------- Referee --------- (David)
+--------- Referee ---------
  
 CREATE TABLE Referee (
     IdReferee NUMBER PRIMARY KEY,
     FOREIGN KEY (IdReferee) REFERENCES Person(IdPerson)
 );
 
---------- Manager --------- (David)
+--------- Manager ---------
 
 CREATE TABLE Manager (
     IdManager NUMBER PRIMARY KEY,
@@ -212,7 +212,7 @@ CREATE TABLE Manager (
 );
 
 
---------- Player --------- (David)
+--------- Player ---------
 
 CREATE TABLE Player (
     IdPlayer NUMBER PRIMARY KEY,
@@ -224,7 +224,7 @@ CREATE TABLE Player (
 );
 
 
---------- ManagerClub --------- (David)
+--------- ManagerClub ---------
 
 CREATE TABLE ManagerClub (
     ClubName VARCHAR2(26),
@@ -237,7 +237,7 @@ CREATE TABLE ManagerClub (
 );
 
 
---------- ManagerMatch --------- (David)
+--------- ManagerMatch ---------
 
 CREATE TABLE ManagerMatch (
     MatchId VARCHAR2(26),
@@ -248,7 +248,7 @@ CREATE TABLE ManagerMatch (
 );
 
 
---------- RefereeMatch --------- (David)
+--------- RefereeMatch ---------
 
 CREATE TABLE RefereeMatch (
     MatchId VARCHAR2(26),
@@ -261,7 +261,7 @@ CREATE TABLE RefereeMatch (
     
 );
 
---------- PlayerClub --------- (David)
+--------- PlayerClub ---------
 
 CREATE TABLE PlayerClub (
     ClubName VARCHAR2(26),
@@ -275,7 +275,7 @@ CREATE TABLE PlayerClub (
 );
 
 
---------- Affiliates --------- (Marina)
+--------- Affiliates ---------
 
 CREATE TABLE Affiliates (
     ClubName1 VARCHAR2(26),
@@ -296,7 +296,7 @@ CREATE TABLE CompetitionClub (
     FOREIGN KEY (IdCompetition) REFERENCES Competition(IdCompetition)
 );
 
---------- PlayerMatch --------- (David)
+--------- PlayerMatch ---------
  
 CREATE TABLE PlayerMatch (
     IdMatch VARCHAR2(26),
@@ -455,20 +455,6 @@ CREATE TABLE RadioProgramme (
     FOREIGN KEY (NameOfTheRadioStation) REFERENCES RadioStation(NameOfTheRadioStation),
     FOREIGN KEY (Nickname) REFERENCES User_db(Nickname)
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -648,8 +634,6 @@ END;
 ------------------------------------------------------------------------
 
 
-
-
 --------------------------
 --   PUBLICITY TABLES   --
 --------------------------
@@ -706,12 +690,6 @@ CREATE TABLE ProductCampaign(
     FOREIGN KEY (Id_Campaign) REFERENCES Campaign(Id_Campaign),
     FOREIGN KEY (NameProduct) REFERENCES Product(NameProduct)
 );
-
-
-
-
-
-
 
 --------- PlacementType ---------
 
@@ -824,4 +802,4 @@ CREATE TABLE PlacementShop (
     PRIMARY KEY (IdShop, IdPlacement),
     FOREIGN KEY (IdShop) REFERENCES Shop(IdShop),
     FOREIGN KEY (IdPlacement) REFERENCES Placement(IdPlacement)
-); 
+);
