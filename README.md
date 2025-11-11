@@ -32,6 +32,7 @@ The implemented relational model can be seen in the image below:
 | `Insert_Data.sql` | Includes SQL code to populate the database, filtering and cleaning the raw data. |
 | `Selects_Merchandizing.sql` | Contains the SQL queries used to analyze and extract data from the database. |
 | `DatasetsDB.zip` | Folder containing all the raw soccer datasets provided at the start of the project. |
+| `DB-Project-Statement.pdf` | Original project statement listing all the requirements of the database. |
 
 ---
 
